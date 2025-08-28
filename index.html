@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>God Bless Day Care Center</title>
+  <meta name="description" content="God Bless Day Care Center — caring for children 0 months to 5 years in Tembisa." />
+  <style>
+    :root{
+      --pink:#ff6ea6; --pink-deep:#9b1d5a; --lemon:#fff4a3; --card:#fff;
+      --ink:#222; --accent:#ff69b4; --success:#2ea44f;
+      --radius:16px; --shadow: 0 10px 24px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      line-height:1.35;color:var(--ink);
+      background: linear-gradient(180deg,#fff0f6 0%, #fff9e6 45%, #e8fbff 100%);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* Floating background */
+    .bg-layer{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+    .floaty{ position:absolute; bottom:-140px; font-size: clamp(20px,4.6vw,56px); opacity:.9;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,.08)); animation: floatUp linear forwards; }
+    @keyframes floatUp { from { transform: translateY(0) } to { transform: translateY(-120vh) rotate(8deg) } }
+    @media (prefers-reduced-motion: reduce){ .floaty{ animation:none } }
+
+    /* Header & nav */
+    header.site-header{
+      position:sticky; top:0; z-index:1000; backdrop-filter: blur(6px) saturate(1.1);
+      background: rgba(255, 225, 235, .92); border-bottom:1px solid rgba(0,0,0,.05);
+    }
+    .nav-wrap{ max-width:1100px; margin:0 auto; padding:12px 16px; display:flex; align-items:center; gap:12px; justify-content:space-between; }
+    .brand{ display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--pink-deep); }
+    .brand h1{ margin:0; font-size:1.15rem; letter-spacing:.2px; }
+    .slogan{ margin:0; font-size:.85rem; color:#7a2c57; opacity:.9; font-style:italic; }
+
+    /* Desktop nav links */
+    .nav-links{ display:flex; gap:10px; align-items:center; }
+    .nav-links a{ text-decoration:none; color:#6b2b59; padding:8px 12px; border-radius:10px; font-weight:700; }
+    .nav-links a:hover{ background:#fff0f6; }
+
+    /* Hamburger */
+    .hamburger{ display:none; background:transparent; border:0; padding:8px; border-radius:8px; cursor:pointer; }
+    .hamburger:focus{ outline:2px solid #ffd3e8; outline-offset:3px; }
+
+    /* Mobile menu */
+    .mobile-menu{ display:none; padding:12px 16px; border-top:1px solid rgba(0,0,0,.03); background: rgba(255,255,255,.6); }
+    .mobile-menu a{ display:block; padding:10px 0; color:#6b2b59; text-decoration:none; font-weight:700; }
+
+    /* Hero & layout */
+    .container{ max-width:1100px; margin:18px auto; padding:0 16px; }
+    .hero{ display:grid; grid-template-columns:1fr 360px; gap:18px; align-items:start; margin-bottom:14px; }
+    .card{ background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px; }
+    .hero .intro h2{ margin:0 0 8px 0; color:#8b004f; font-size:clamp(20px,3.5vw,34px); }
+    .pill{ display:inline-block; background:var(--lemon); padding:6px 10px; border-radius:999px; font-weight:800; margin-bottom:8px; }
+
+    /* grid for facilities & program */
+    .grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:12px; }
+    .list{ padding-left:0; margin:0; }
+    .list li{ list-style:none; padding:6px 0; }
+    .list li::before{ content:"🌟 "; }
+
+    /* slideshow */
+    .slideshow{ margin:12px 0; border-radius:14px; overflow:hidden; position:relative; }
+    .slides img{ width:100%; display:block; height:320px; object-fit:cover; }
+    .slide-controls{ position:absolute; left:12px; right:12px; bottom:12px; display:flex; justify-content:space-between; gap:8px; }
+
+    /* enroll form */
+    form .row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    label{ display:block; font-weight:700; margin-bottom:6px; font-size:.95rem; }
+    input, select, textarea{ width:100%; padding:10px 12px; border-radius:12px; border:1px solid #e6dfe6; background:#fffdf8; font-size:1rem; }
+    textarea{ min-height:110px; resize:vertical; }
+    .btn{ display:inline-block; background:var(--accent); color:#fff; border:0; padding:10px 14px; border-radius:12px; font-weight:800; cursor:pointer; }
+    .btn.secondary{ background:#6b7280; }
+    .submit{ background:var(--success); width:100%; color:#fff; border:0; padding:12px; border-radius:12px; font-weight:900; cursor:pointer; margin-top:10px; }
+
+    footer{ margin-top:22px; background: #ffd6ea; padding:16px; text-align:center; border-top:1px solid rgba(0,0,0,.04); }
+
+    /* responsive */
+    @media (max-width:920px){
+      .hero{ grid-template-columns:1fr; }
+      .grid3{ grid-template-columns:1fr; }
+      .nav-links{ display:none; }
+      .hamburger{ display:inline-flex; }
+      .mobile-menu{ display:none; }
+      .mobile-menu.open{ display:block; }
+      .hero-card{ padding:14px; }
+      .slides img{ height:220px; }
+      form .row{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating animated background -->
+  <div class="bg-layer" id="bg-layer" aria-hidden="true"></div>
+
+  <header class="site-header" role="banner">
+    <div class="nav-wrap">
+      <a class="brand" href="#top">
+        <span style="font-size:28px">👶</span>
+        <div>
+          <h1>God Bless Day Care Center</h1>
+          <p class="slogan">“Blessed Beginnings, Brighter Tomorrows.”</p>
+        </div>
+      </a>
+
+      <nav aria-label="Primary navigation">
+        <div class="nav-links" id="navLinks">
+          <a href="#about">About</a>
+          <a href="#facilities">Facilities</a>
+          <a href="#programme">Program</a>
+          <a href="#enrol">Enroll</a>
+          <a href="#contact">Contact</a>
+          <a class="btn" href="#enrol" style="padding:8px 12px; font-size:.95rem;">Apply</a>
+        </div>
+
+        <button class="hamburger" id="hamburger" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle menu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="#6b2b59" stroke-width="2" stroke-linecap="round"></path></svg>
+        </button>
+      </nav>
+    </div>
+
+    <div id="mobileMenu" class="mobile-menu" role="menu" aria-hidden="true">
+      <a href="#about">About</a>
+      <a href="#facilities">Facilities</a>
+      <a href="#programme">Program</a>
+      <a href="#enrol">Enroll</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <main id="top" class="container" role="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="card hero-card intro" aria-labelledby="introTitle">
+        <div class="pill">👶 0 months – 5 years</div>
+        <h2 id="introTitle">A warm, safe space where little minds grow with love.</h2>
+        <p>We provide caring, play-based learning for infants and young children in a clean, secure environment. Our qualified staff nurture curiosity, kindness, and confidence through stories, music, movement and guided exploration.</p>
+        <ul class="list" style="margin-top:10px">
+          <li>Play-based early learning</li>
+          <li>Gentle routines that feel like home</li>
+          <li>Strong family partnerships & daily updates</li>
+        </ul>
+      </div>
+
+      <aside class="card" aria-label="Contact info">
+        <h3>📞 Contact</h3>
+        <p><strong>Phone:</strong> <a href="tel:+27732013031">073 201 3031</a></p>
+        <p><strong>Address:</strong> 3382 Morocco Street, Tswelopele Extension 6, Tembisa, 1632</p>
+        <p class="muted" style="margin-top:8px;color:#555">Open Mon–Fri • Early drop-off available on request</p>
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button class="btn" id="tourBtn">Schedule Tour</button>
+          <button class="btn secondary" id="muteBtn" aria-pressed="false">🔈 Mute</button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Facilities -->
+    <section id="facilities" class="card" style="margin-bottom:14px">
+      <h3>🏫 Our Facilities</h3>
+      <div class="grid3" style="margin-top:12px">
+        <div>
+          <h4>Safe & Stimulating</h4>
+          <ul class="list"><li>Age-zoned classrooms</li><li>Nap rooms & soft-mat areas</li></ul>
+        </div>
+        <div>
+          <h4>Learning & Play</h4>
+          <ul class="list"><li>Storytime, music & art</li><li>Early numeracy & literacy through play</li></ul>
+        </div>
+        <div>
+          <h4>Nutrition & Care</h4>
+          <ul class="list"><li>Nutritious meals & snacks</li><li>Allergies recorded & monitored</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily Program -->
+    <section id="programme" class="card" style="margin-bottom:14px">
+      <h3>🗓️ Daily Program</h3>
+      <div class="grid3" style="margin-top:12px">
+        <div><h4>Infants</h4><ul class="list"><li>Responsive care & individual routines</li></ul></div>
+        <div><h4>Toddlers</h4><ul class="list"><li>Circle time, exploratory play</li></ul></div>
+        <div><h4>Preschool</h4><ul class="list"><li>Pre-literacy & social skills</li></ul></div>
+      </div>
+    </section>
+
+    <!-- Slideshow -->
+    <section class="card slideshow" aria-label="Happy moments slideshow">
+      <div class="slides" id="slides">
+        <img src="images/slide1.jpg" alt="Children playing outdoors">
+        <img src="images/slide2.jpg" alt="Story time and learning">
+        <img src="images/slide3.jpg" alt="Creative arts and crafts">
+      </div>
+      <div class="slide-controls">
+        <small style="background:rgba(255,255,255,.85);padding:6px 10px;border-radius:999px">Our Happy Moments</small>
+        <div style="display:flex; gap:8px">
+          <button class="btn secondary" id="prev" aria-label="Previous image">◀</button>
+          <button class="btn secondary" id="next" aria-label="Next image">▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enrolment -->
+    <section id="enrol" class="card" aria-labelledby="enrolTitle">
+      <h3 id="enrolTitle">📝 Enroll Your Child</h3>
+      <p style="margin-top:4px;color:#555">Complete the form below. You can save locally, download all applications, or open your mail client to send an application now.</p>
+
+      <form id="enrolForm" novalidate style="margin-top:12px">
+        <div class="row">
+          <div>
+            <label for="parent">Parent/Guardian Name *</label>
+            <input id="parent" name="parent" placeholder="Your full name" required>
+          </div>
+          <div>
+            <label for="phone">Contact Number *</label>
+            <input id="phone" name="phone" inputmode="tel" placeholder="e.g. 073 201 3031" required>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:8px">
+          <div>
+            <label for="child">Child’s Full Name *</label>
+            <input id="child" name="child" placeholder="Child's full name" required>
+          </div>
+          <div>
+            <label for="age">Child’s Age (years) *</label>
+            <input id="age" name="age" type="number" min="0" max="5" step="0.1" placeholder="0 – 5" required>
+          </div>
+        </div>
+
+        <div style="margin-top:8px">
+          <label for="start">Preferred Start Date *</label>
+          <input id="start" name="start" type="date" required>
+        </div>
+
+        <div style="margin-top:8px">
+          <label for="session">Session *</label>
+          <select id="session" name="session" required>
+            <option value="">Select…</option>
+            <option>Full Day</option>
+            <option>Half Day (Morning)</option>
+            <option>Half Day (Afternoon)</option>
+          </select>
+        </div>
+
+        <div style="margin-top:8px">
+          <label for="notes">Additional Notes (allergies, routines, special needs)</label>
+          <textarea id="notes" name="notes" placeholder="Tell us anything helpful"></textarea>
+        </div>
+
+        <p id="formMessage" role="status" aria-live="polite" style="margin:10px 0 0;color:#666"></p>
+
+        <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap">
+          <button class="submit" type="submit">Save Application</button>
+          <button type="button" id="emailBtn" class="btn secondary">Send by Email</button>
+          <button type="button" id="downloadBtn" class="btn secondary">Download all (CSV)</button>
+          <button type="button" id="viewApps" class="btn secondary">View Saved Apps</button>
+        </div>
+      </form>
+
+      <div id="appsList" style="display:none; margin-top:12px"></div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="card" style="margin-bottom:26px">
+      <h3>Contact & Safety</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+        <div><strong>Phone:</strong> <a href="tel:+27732013031">073 201 3031</a></div>
+        <div><strong>Address:</strong> 3382 Morocco Street, Tswelopele Extension 6, Tembisa, 1632</div>
+        <div><strong>Safety:</strong> Secure sign in/out, daily hygiene checks, first aid trained caregivers.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+      <div>© <span id="year"></span> God Bless Day Care Center</div>
+      <div>— <button id="musicToggle" class="btn" aria-pressed="false">🔈 Music</button></div>
+    </div>
+    <audio id="bgMusic" loop preload="none">
+      <source src="https://www.bensound.com/bensound-music/bensound-littleidea.mp3" type="audio/mpeg">
+      <!-- If you prefer, replace the src with your hosted MP3 file -->
+    </audio>
+  </footer>
+
+  <script>
+    // Basic helpers
+    const byId = id => document.getElementById(id);
+
+    // --- Mobile menu toggle
+    const hamburger = byId('hamburger');
+    const mobileMenu = byId('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      mobileMenu.setAttribute('aria-hidden', !open);
+      hamburger.setAttribute('aria-expanded', open);
+    });
+
+    // --- Year
+    byId('year').textContent = new Date().getFullYear();
+
+    // --- Slideshow logic (responsive + controls)
+    (function initSlideshow(){
+      const slideContainer = byId('slides');
+      const imgs = Array.from(slideContainer.querySelectorAll('img'));
+      let idx = 0, timer = null;
+      function show(i){
+        imgs.forEach((img, j) => img.style.display = (j === i) ? 'block' : 'none');
+      }
+      function next(){ idx = (idx + 1) % imgs.length; show(idx); }
+      function prev(){ idx = (idx - 1 + imgs.length) % imgs.length; show(idx); }
+      byId('next').addEventListener('click', () => { next(); resetTimer(); });
+      byId('prev').addEventListener('click', () => { prev(); resetTimer(); });
+      function resetTimer(){ clearInterval(timer); timer = setInterval(next, 4000); }
+      show(0); resetTimer();
+    })();
+
+    // --- Background music toggle + mute button in hero area
+    const bgMusic = byId('bgMusic');
+    const musicToggle = byId('musicToggle');
+    const muteBtn = byId('muteBtn');
+    function setMusicPlaying(play){
+      if (play) { bgMusic.play().catch(()=>{}); musicToggle.textContent = '🔊 Music'; musicToggle.setAttribute('aria-pressed','true'); muteBtn.textContent = '🔊 Unmute'; muteBtn.setAttribute('aria-pressed','true'); }
+      else { bgMusic.pause(); musicToggle.textContent = '🔈 Music'; musicToggle.setAttribute('aria-pressed','false'); muteBtn.textContent = '🔈 Mute'; muteBtn.setAttribute('aria-pressed','false'); }
+    }
+    musicToggle.addEventListener('click', () => setMusicPlaying(bgMusic.paused));
+    muteBtn.addEventListener('click', () => setMusicPlaying(bgMusic.paused));
+
+    // --- Floating background spawner (balloons & toys)
+    (function spawnFloaties(){
+      const BG = byId('bg-layer');
+      const emojis = ['🎈','🎈','🧸','🪀','🚗','🪁','🧩','🎵','📚'];
+      const minDur=14, maxDur=28;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) return;
+      function makeOne(){
+        const s = document.createElement('span');
+        s.className = 'floaty';
+        s.textContent = emojis[(Math.random()*emojis.length)|0];
+        const left = (Math.random()*100).toFixed(2);
+        s.style.left = left + 'vw';
+        s.style.animationDuration = (Math.random()*(maxDur-minDur)+minDur).toFixed(1) + 's';
+        // small horizontal sway using Web Animations
+        s.animate([{transform:'translateX(0)'},{transform:'translateX(-10px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{
+          duration: 3000 + Math.random()*2500, iterations: Infinity, direction:'alternate', easing:'ease-in-out'
+        });
+        BG.appendChild(s);
+        s.addEventListener('animationend', ()=> s.remove());
+      }
+      for (let i=0;i<10;i++) setTimeout(makeOne, i*500);
+      setInterval(makeOne, 1400);
+    })();
+
+    // --- Enrollment form: save to localStorage, email via mailto, download CSV, view saved
+    const form = byId('enrolForm');
+    const messageEl = byId('formMessage');
+    const emailBtn = byId('emailBtn');
+    const downloadBtn = byId('downloadBtn');
+    const viewAppsBtn = byId('viewApps');
+    const appsList = byId('appsList');
+
+    function getApps(){ try { return JSON.parse(localStorage.getItem('gbdc_applications')||'[]'); } catch(e){ return []; } }
+    function saveApp(app){ const apps = getApps(); apps.push(app); localStorage.setItem('gbdc_applications', JSON.stringify(apps)); }
+    function formatAppSimple(a){
+      return `Parent: ${a.parent}\nPhone: ${a.phone}\nChild: ${a.child}\nAge: ${a.age}\nStart: ${a.start}\nSession: ${a.session}\nNotes: ${a.notes||''}\nSubmitted: ${a.submittedAt}\n`;
+    }
+
+    form.addEventListener('submit', (ev)=>{
+      ev.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      // required fields validation
+      if (!data.parent || !data.phone || !data.child || !data.age || !data.start || !data.session){
+        messageEl.textContent = 'Please complete all required fields marked *';
+        messageEl.style.color = '#b00020';
+        return;
+      }
+      const app = {...data, submittedAt: new Date().toISOString()};
+      saveApp(app);
+      messageEl.textContent = 'Saved locally. You can download or send by email.';
+      messageEl.style.color = '#216e39';
+      form.reset();
+    });
+
+    emailBtn.addEventListener('click', ()=>{
+      const data = Object.fromEntries(new FormData(form).entries());
+      if (!data.parent || !data.phone || !data.child){
+        // if user hasn't filled form, still allow emailing a template
+        if (!confirm('Form incomplete. Do you want to open your email client with a prefilled template?')) return;
+      }
+      const payload = Object.fromEntries(new FormData(form).entries());
+      payload.submittedAt = new Date().toISOString();
+      const subject = encodeURIComponent('GBDC Application: ' + (payload.child || 'New applicant'));
+      const body = encodeURIComponent(formatAppSimple(payload));
+      // opens user's email client
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    });
+
+    downloadBtn.addEventListener('click', ()=>{
+      const apps = getApps();
+      if (!apps.length){ alert('No saved applications.'); return; }
+      const keys = ['parent','phone','child','age','start','session','notes','submittedAt'];
+      const lines = [keys.join(',')];
+      apps.forEach(a => {
+        const row = keys.map(k => `"${(a[k]||'').toString().replace(/"/g,'""')}"`).join(',');
+        lines.push(row);
+      });
+      const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'gbdc_applications.csv'; document.body.appendChild(a); a.click();
+      a.remove(); URL.revokeObjectURL(url);
+    });
+
+    viewAppsBtn.addEventListener('click', ()=>{
+      const apps = getApps();
+      if (!apps.length){ appsList.style.display='block'; appsList.textContent='No saved applications'; return; }
+      appsList.style.display = appsList.style.display === 'block' ? 'none' : 'block';
+      if (appsList.style.display === 'block'){
+        appsList.innerHTML = '<h4>Saved applications</h4>' + apps.map((a,i)=>`
+          <div style="border:1px dashed #eee; padding:10px; margin:8px 0; border-radius:10px;">
+            <strong>${i+1}. ${a.child} (Parent: ${a.parent})</strong>
+            <div style="font-size:.95rem; color:#444; margin-top:6px; white-space:pre-wrap;">${formatAppSimple(a)}</div>
+          </div>
+        `).join('');
+      }
+    });
+
+    // "Schedule tour" simply scrolls to contact and focuses phone link
+    byId('tourBtn').addEventListener('click', ()=>{ location.hash = '#contact'; setTimeout(()=> byId('contact').querySelector('a')?.focus(), 200); });
+
+    // Accessibility: trap focus for mobile menu (simple)
+    // (Left minimal for simplicity — production site should add full focus management)
+  </script>
+</body>
+</html>

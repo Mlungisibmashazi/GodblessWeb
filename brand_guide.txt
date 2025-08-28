@@ -1,0 +1,29 @@
+God Bless Day Care Center — Mini Brand Guide
+===========================================
+
+Slogan
+  Blessed Beginnings, Brighter Tomorrows.
+
+Primary colors
+  - Pink: #ff6ea6
+  - Deep pink (accent): #9b1d5a
+  - Lemon (highlights): #fff4a3
+  - Mint/sky background: #e8fbff
+
+Typography
+  - Headings: system-ui / friendly rounded (e.g., 'Segoe UI', 'Roboto')
+  - Body: system-ui fallback; playful feel recommended
+  - For print: use rounded friendly fonts (e.g., Quicksand, Poppins, Nunito)
+
+Logo suggestion
+  - Simple icon: baby face or small sprout + wordmark 'God Bless Day Care Center'
+  - Keep it soft, rounded, and simple — two-color variant (pink & lemon)
+
+Imagery
+  - Use bright, natural photos of children playing, low-angle playground shots, close-ups of hands crafting.
+  - Keep faces blurred or obtain parental permission for any public use.
+
+Accessibility pointers
+  - Respect prefers-reduced-motion for animations (already included)
+  - Ensure high contrast buttons for users with low vision
+  - Provide alt text for all images
